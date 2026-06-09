@@ -19,8 +19,6 @@ Built on the **TMDB 5000** dataset:
 - `data/raw/tmdb_5000_movies.csv` — titles, overviews, genres, keywords, votes, popularity
 - `data/raw/tmdb_5000_credits.csv` — cast and crew
 
-These files are expected to already exist locally in `data/raw/`. They are not
-downloaded at runtime, and the scripts raise a clear error if they are missing.
 
 ## Methodology
 
@@ -48,21 +46,6 @@ Each recommendation carries three scores, all in `[0, 1]`:
 
 Results are sorted by `final_score` descending.
 
-## Limitations
-
-- **The XGBoost target is a proxy heuristic, not real user feedback.** The model
-  is trained on a synthetic "good recommendation" label derived from similarity
-  and movie-quality thresholds (vote average and vote count). To avoid target
-  leakage, the three target-defining fields (`tfidf_similarity_score`,
-  `candidate_vote_average`, `candidate_vote_count`) are deliberately **excluded**
-  from the model's inputs; XGBoost predicts the proxy target from metadata only.
-- **It is not personalised.** There is no user model — the same query always
-  returns the same recommendations.
-- **It may favour popular, highly rated movies**, because the proxy target
-  rewards exactly those qualities.
-
-This is honestly a TF-IDF content recommender plus a heuristic XGBoost reranker,
-not a true personalised recommendation system.
 
 ## Installation
 
@@ -88,24 +71,5 @@ python app.py
 ```
 
 Then open the printed local URL (default `http://127.0.0.1:7860`), enter a movie
-title, and choose how many recommendations to return.
+title, and choose how many recommendations to return!
 
-## Example output
-
-`recommend_movies("The Dark Knight", top_n=5)`:
-
-| rank | title | genres | release_year | similarity_score | recommendation_score | final_score |
-|---|---|---|---|---|---|---|
-| 1 | Batman Begins | Action, Crime, Drama | 2005 | 0.3248 | 0.7562 | 0.5405 |
-| 2 | The Dark Knight Rises | Action, Crime, Drama, Thriller | 2012 | 0.4022 | 0.6535 | 0.5278 |
-| 3 | Batman v Superman: Dawn of Justice | Action, Adventure, Fantasy | 2016 | 0.2158 | 0.2289 | 0.2224 |
-| 4 | Batman: The Dark Knight Returns, Part 2 | Action, Animation | 2013 | 0.3203 | 0.0784 | 0.1994 |
-| 5 | Batman Returns | Action, Fantasy | 1992 | 0.3300 | 0.0408 | 0.1854 |
-
-## Future improvements
-
-- Train on **real user feedback** instead of a proxy target.
-- Incorporate **implicit feedback** (watches, clicks, ratings).
-- Replace the heuristic reranker with a proper **learning-to-rank** model.
-- Use **text/embedding** representations if the classical-ML constraint is lifted.
-- Add **autocomplete / dropdown** title search in the app.
