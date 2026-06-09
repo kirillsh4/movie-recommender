@@ -22,7 +22,7 @@ Built on the **TMDB 5000** dataset:
 
 ## Methodology
 
-1. **Preprocessing** — the two raw files are merged and parsed into clean
+1. **Preprocessing** — I parsed and merged the two raw files into clean
    columns (genres, keywords, top-5 cast, director, release year) and a
    `combined_text` field used for vectorisation.
 2. **Retrieval (TF-IDF)** — `combined_text` is vectorised with a
