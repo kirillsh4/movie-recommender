@@ -9,8 +9,7 @@ with a small Gradio web app.
 
 Given a movie you like, the system retrieves textually similar movies and
 reranks them using metadata signals, then blends the two into a single ranked
-list. It exists as a compact, end-to-end portfolio example of a two-stage
-**retrieve-then-rerank** recommendation pipeline built only with classical ML.
+list.
 
 ## Dataset
 
